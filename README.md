@@ -8,6 +8,27 @@ DS-1/
 └── mobile/   # Application Flutter
 ```
 
+## Fonctionnalités réalisées
+
+**Application mobile (Flutter)**
+- Page de connexion avec validation du formulaire (email et mot de passe)
+- Affichage / masquage du mot de passe
+- Indicateur de chargement pendant la connexion
+- Message d'erreur en cas d'identifiants invalides
+- Désérialisation de la réponse JSON en objet `User`
+- Stockage sécurisé du token JWT avec `flutter_secure_storage`
+- Page de profil (nom, email, rôle)
+- Déconnexion (suppression du token)
+
+**API (Express.js)**
+- Endpoint de connexion `POST /login`
+- Mots de passe hashés avec bcrypt
+- Génération d'un token JWT à la connexion
+- Base de données PostgreSQL (tables `users` et `roles`)
+- Script de seeding avec 3 utilisateurs de test
+- Base de données locale avec Docker Compose
+- Déploiement sur VPS avec un `Dockerfile`
+
 ## Identifiants de connexion
 
 | Rôle  | Email                    | Mot de passe  |
