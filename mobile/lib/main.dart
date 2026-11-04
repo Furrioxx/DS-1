@@ -39,17 +39,27 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>(); // Clé pour le formulaire
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool isLoading = false;
+
+  void setLoading(bool loading) {
+    if(loading) {
+      // on reset le mot de passe à chaque essai
+      _passwordController.text = "";
+    }
+    setState(() {
+      isLoading = loading;
+    });
+  }
 
   void _login() async {
     if (_formKey.currentState!.validate()) {
       String email = _emailController.text;
       String password = _passwordController.text;
 
-      print('test');
-
       try {
+        setLoading(true);
         User user = await _authService.login(email, password);
-        print(user.toString());
+
         // Connexion réussie
         Navigator.push(
           context,
@@ -76,6 +86,9 @@ class _LoginScreenState extends State<LoginScreen> {
             ],
           ),
         );
+      }
+      finally {
+        setLoading(false);
       }
     }
   }
@@ -141,14 +154,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   return null;
                 },
               ),
-              const SizedBox(height: 24.0),
 
-              // Bouton de Connexion
-              ElevatedButton(
-                onPressed: _login,
-                child: const Text('Se connecter'),
-              ),
+              SizedBox(height: 16.0),
 
+              if(isLoading)
+                CircularProgressIndicator()
+              else
+                ElevatedButton(
+                  onPressed: _login,
+                  child: const Text('Se connecter'),
+                ),
             ],
           ),
         ),
