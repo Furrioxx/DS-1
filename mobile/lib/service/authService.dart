@@ -7,7 +7,7 @@ class Authservice {
 
   Future<User> login(String email, String password) async {
     final response = await http.post(
-        Uri.parse('http://localhost:3000/login'),
+        Uri.parse('https://flutter.furrioxx-lab.fr/login'),
         headers: {'Content-Type': 'application/json; charset=UTF-8'},
         body: json.encode({
           'email': email,
