@@ -1,5 +1,6 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const pool = require('../db');
 
 const router = express.Router();
@@ -25,6 +26,12 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ status: 401, message: 'Identifiants invalides' });
     }
 
+    const token = jwt.sign(
+      { id: user.id, email: user.email, role: user.role },
+      process.env.JWT_SECRET,
+      { expiresIn: process.env.JWT_EXPIRES_IN || '1h' }
+    );
+
     return res.status(200).json({
       status: 200,
       message: 'Success',
@@ -33,6 +40,7 @@ router.post('/login', async (req, res) => {
       lastname: user.lastname,
       email: user.email,
       role: user.role,
+      token,
     });
   } catch (err) {
     console.error(err);
