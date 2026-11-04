@@ -32,7 +32,7 @@ router.post('/login', async (req, res) => {
       firstname: user.firstname,
       lastname: user.lastname,
       email: user.email,
-      role: user.role_id,
+      role: user.role,
     });
   } catch (err) {
     console.error(err);
