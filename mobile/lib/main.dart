@@ -1,4 +1,6 @@
+import 'package:ds_tom/service/authService.dart';
 import 'package:flutter/material.dart';
+import 'model/user.dart';
 import 'screen/profile_screen.dart';
 
 
@@ -33,46 +35,33 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _authService = new Authservice();
   final _formKey = GlobalKey<FormState>(); // Clé pour le formulaire
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  final Map<String, Map<String, dynamic>> _users = {
-    'user@example.com': {
-      'password': 'userpass',
-      'firstName': 'Jane',
-      'lastName': 'Doe',
-      'role': 'User',
-    },
-    'admin@example.com': {
-      'password': 'adminpass',
-      'firstName': 'Admin',
-      'lastName': 'User',
-      'role': 'Admin',
-    },
-  };
-
-
-  void _login() {
+  void _login() async {
     if (_formKey.currentState!.validate()) {
       String email = _emailController.text;
       String password = _passwordController.text;
-      print("email $email password $password");
-      if (_users.containsKey(email) && _users[email]!['password'] == password) {
+
+      print('test');
+
+      try {
+        User user = await _authService.login(email, password);
+        print(user.toString());
         // Connexion réussie
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) =>
                 ProfileScreen(
-                  email: email,
-                  firstName: _users[email]!['firstName'],
-                  lastName: _users[email]!['lastName'],
-                  role: _users[email]!['role'],
+                  user: user,
                 ),
           ),
         );
-      } else {
+      }
+      catch (e) {
         // Connexion échouée
         showDialog(
           context: context,
@@ -87,7 +76,6 @@ class _LoginScreenState extends State<LoginScreen> {
             ],
           ),
         );
-
       }
     }
   }
