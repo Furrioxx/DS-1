@@ -102,72 +102,74 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey, // Assignation de la clé au formulaire
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey, // Assignation de la clé au formulaire
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
 
-              // Champ Email
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(
-                  labelText: 'Email',
-                  border: OutlineInputBorder(),
-                  icon: Icon(Icons.mail),
+                // Champ Email
+                TextFormField(
+                  controller: _emailController,
+                  decoration: const InputDecoration(
+                    labelText: 'Email',
+                    border: OutlineInputBorder(),
+                    icon: Icon(Icons.mail),
+                  ),
+                  //keyboardType: TextInputType.visiblePassword,
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (value) {
+                    // Validation de l'email
+                    if (value == null || value.isEmpty) {
+                      return 'Veuillez entrer votre email';
+                    }
+                    // Regex simple pour valider l'email
+                    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
+                      return 'Veuillez entrer un email valide';
+                    }
+                    return null;
+                  },
                 ),
-                //keyboardType: TextInputType.visiblePassword,
-                keyboardType: TextInputType.emailAddress,
-                validator: (value) {
-                  // Validation de l'email
-                  if (value == null || value.isEmpty) {
-                    return 'Veuillez entrer votre email';
-                  }
-                  // Regex simple pour valider l'email
-                  if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                    return 'Veuillez entrer un email valide';
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
 
-              // Champ Mot de Passe
-              TextFormField(
-                controller: _passwordController,
-                decoration: const InputDecoration(
-                  labelText: 'Mot de passe',
-                  border: OutlineInputBorder(),
-                  icon: Icon(Icons.lock),
+                // Champ Mot de Passe
+                TextFormField(
+                  controller: _passwordController,
+                  decoration: const InputDecoration(
+                    labelText: 'Mot de passe',
+                    border: OutlineInputBorder(),
+                    icon: Icon(Icons.lock),
+                  ),
+                  obscureText: true, // Masquer le texte
+                  validator: (value) {
+                    // Validation du mot de passe
+                    if (value == null || value.isEmpty) {
+                      return 'Veuillez entrer votre mot de passe';
+                    }
+                    if (value.length < 6) {
+                      return 'Le mot de passe doit contenir au moins 6 caractères';
+                    }
+                    return null;
+                  },
                 ),
-                obscureText: true, // Masquer le texte
-                validator: (value) {
-                  // Validation du mot de passe
-                  if (value == null || value.isEmpty) {
-                    return 'Veuillez entrer votre mot de passe';
-                  }
-                  if (value.length < 6) {
-                    return 'Le mot de passe doit contenir au moins 6 caractères';
-                  }
-                  return null;
-                },
-              ),
 
-              SizedBox(height: 16.0),
+                SizedBox(height: 16.0),
 
-              if(isLoading)
-                CircularProgressIndicator()
-              else
-                ElevatedButton(
-                  onPressed: _login,
-                  child: const Text('Se connecter'),
-                ),
-            ],
+                if(isLoading)
+                  CircularProgressIndicator()
+                else
+                  ElevatedButton(
+                    onPressed: _login,
+                    child: const Text('Se connecter'),
+                  ),
+              ],
+            ),
           ),
         ),
-      ),
+      )
 
     );
   }
