@@ -1,4 +1,5 @@
 import 'package:ds_tom/model/user.dart';
+import 'package:ds_tom/service/tokenStorageService.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -17,6 +18,7 @@ class Authservice {
     final Map<String, dynamic> data = json.decode(response.body);
 
     if (response.statusCode == 200) {
+      await TokenStorageService.save(data['token'] as String);
       return User.fromJson(data);
     }
 

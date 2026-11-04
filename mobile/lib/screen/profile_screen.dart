@@ -1,4 +1,5 @@
 import 'package:ds_tom/model/user.dart';
+import 'package:ds_tom/service/tokenStorageService.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -18,6 +19,7 @@ class ProfileScreen extends StatelessWidget {
         icon: Icon(Icons.logout),
         onPressed: () {
           // Action de déconnexion
+          TokenStorageService.delete();
           Navigator.pop(context);
         },
       ),
@@ -47,6 +49,7 @@ class ProfileScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 // Déconnexion en retournant à l'écran de connexion
+                TokenStorageService.delete();
                 Navigator.pop(context);
               },
               child: Text('Se déconnecter'),
